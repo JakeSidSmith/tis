@@ -1,4 +1,11 @@
-import { isNumber, isNotNumber, isString, isNotString } from '../src';
+import {
+  isNumber,
+  isNotNumber,
+  isString,
+  isNotString,
+  isBoolean,
+  isNotBoolean,
+} from '../src';
 
 const self = <T>(input: T): T => input;
 
@@ -175,5 +182,93 @@ describe('isNotString', () => {
     }
 
     expect(isNotString(input)).toBe(true);
+  });
+});
+
+describe('isBoolean', () => {
+  it('should return true when input is a boolean', () => {
+    const input = false as boolean | null | undefined;
+
+    self(input); // @tsassert: boolean | null | undefined
+
+    if (isBoolean(input)) {
+      self(input); // @tsassert: boolean
+    } else {
+      self(input); // @tsassert: null | undefined
+    }
+
+    expect(isBoolean(input)).toBe(true);
+  });
+
+  it('should return false when input is not a boolean', () => {
+    const input = null as boolean | null | undefined;
+
+    self(input); // @tsassert: boolean | null | undefined
+
+    if (isBoolean(input)) {
+      self(input); // @tsassert: boolean
+    } else {
+      self(input); // @tsassert: null | undefined
+    }
+
+    expect(isBoolean(input)).toBe(false);
+  });
+
+  it('should narrow to type never when types do not overlap', () => {
+    const input = '' as string | null | undefined;
+
+    self(input); // @tsassert: string | null | undefined
+
+    if (isBoolean(input)) {
+      self(input); // @tsassert: never
+    } else {
+      self(input); // @tsassert: string | null | undefined
+    }
+
+    expect(isBoolean(input)).toBe(false);
+  });
+});
+
+describe('isNotBoolean', () => {
+  it('should return true when input is not a boolean', () => {
+    const input = null as boolean | null | undefined;
+
+    self(input); // @tsassert: boolean | null | undefined
+
+    if (isNotBoolean(input)) {
+      self(input); // @tsassert: null | undefined
+    } else {
+      self(input); // @tsassert: boolean
+    }
+
+    expect(isNotBoolean(input)).toBe(true);
+  });
+
+  it('should return false when input is a boolean', () => {
+    const input = false as boolean | null | undefined;
+
+    self(input); // @tsassert: boolean | null | undefined
+
+    if (isNotBoolean(input)) {
+      self(input); // @tsassert: null | undefined
+    } else {
+      self(input); // @tsassert: boolean
+    }
+
+    expect(isNotBoolean(input)).toBe(false);
+  });
+
+  it('should narrow to type never when types do not overlap', () => {
+    const input = '' as string | null | undefined;
+
+    self(input); // @tsassert: string | null | undefined
+
+    if (isNotBoolean(input)) {
+      self(input); // @tsassert: string | null | undefined
+    } else {
+      self(input); // @tsassert: never
+    }
+
+    expect(isNotBoolean(input)).toBe(true);
   });
 });
