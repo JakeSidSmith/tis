@@ -1,16 +1,17 @@
-/* eslint-disable no-unused-expressions */
 import { isNumber } from '../src';
+
+const self = <T>(input: T): T => input;
 
 describe('isNumber', () => {
   it('should return true when input is a number', () => {
     const input = 0 as number | null | undefined;
 
-    input; // @tsassert: number | null | undefined
+    self(input); // @tsassert: number | null | undefined
 
     if (isNumber(input)) {
-      input; // @tsassert: number
+      self(input); // @tsassert: number
     } else {
-      input; // @tsassert: null | undefined
+      self(input); // @tsassert: null | undefined
     }
 
     expect(isNumber(input)).toBe(true);
@@ -19,12 +20,12 @@ describe('isNumber', () => {
   it('should return false when input is not a number', () => {
     const input = null as number | null | undefined;
 
-    input; // @tsassert: number | null | undefined
+    self(input); // @tsassert: number | null | undefined
 
     if (isNumber(input)) {
-      input; // @tsassert: number
+      self(input); // @tsassert: number
     } else {
-      input; // @tsassert: null | undefined
+      self(input); // @tsassert: null | undefined
     }
 
     expect(isNumber(input)).toBe(false);
@@ -33,12 +34,12 @@ describe('isNumber', () => {
   it('should narrow to type never when types do not overlap', () => {
     const input = '' as string | null | undefined;
 
-    input; // @tsassert: string | null | undefined
+    self(input); // @tsassert: string | null | undefined
 
     if (isNumber(input)) {
-      input; // @tsassert: never
+      self(input); // @tsassert: never
     } else {
-      input; // @tsassert: string | null | undefined
+      self(input); // @tsassert: string | null | undefined
     }
 
     expect(isNumber(input)).toBe(false);
