@@ -7,6 +7,8 @@ import {
   isNotBoolean,
   isUndefined,
   isNotUndefined,
+  isNotDefined,
+  isDefined,
 } from '../src';
 
 const self = <T>(input: T): T => input;
@@ -360,5 +362,93 @@ describe('isNotUndefined', () => {
     }
 
     expect(isNotUndefined(input)).toBe(true);
+  });
+});
+
+describe('isDefined', () => {
+  it('should return true when input is not undefined', () => {
+    const input = null as string | null | undefined;
+
+    self(input); // @tsassert: string | null | undefined
+
+    if (isDefined(input)) {
+      self(input); // @tsassert: string | null
+    } else {
+      self(input); // @tsassert: undefined
+    }
+
+    expect(isDefined(input)).toBe(true);
+  });
+
+  it('should return false when input is undefined', () => {
+    const input = undefined as string | null | undefined;
+
+    self(input); // @tsassert: string | null | undefined
+
+    if (isDefined(input)) {
+      self(input); // @tsassert: string | null
+    } else {
+      self(input); // @tsassert: undefined
+    }
+
+    expect(isDefined(input)).toBe(false);
+  });
+
+  it('should narrow to type never when types do not overlap', () => {
+    const input = '' as string | boolean | null;
+
+    self(input); // @tsassert: string | boolean | null
+
+    if (isDefined(input)) {
+      self(input); // @tsassert: string | boolean | null
+    } else {
+      self(input); // @tsassert: never
+    }
+
+    expect(isDefined(input)).toBe(true);
+  });
+});
+
+describe('isNotDefined', () => {
+  it('should return true when input is undefined', () => {
+    const input = undefined as string | null | undefined;
+
+    self(input); // @tsassert: string | null | undefined
+
+    if (isNotDefined(input)) {
+      self(input); // @tsassert: undefined
+    } else {
+      self(input); // @tsassert: string | null
+    }
+
+    expect(isNotDefined(input)).toBe(true);
+  });
+
+  it('should return false when input is not undefined', () => {
+    const input = null as string | null | undefined;
+
+    self(input); // @tsassert: string | null | undefined
+
+    if (isNotDefined(input)) {
+      self(input); // @tsassert: undefined
+    } else {
+      self(input); // @tsassert: string | null
+    }
+
+    expect(isNotDefined(input)).toBe(false);
+  });
+
+  it('should narrow to type never when types do not overlap', () => {
+    const input = '' as string | boolean | null;
+
+    self(input); // @tsassert: string | boolean | null
+
+    if (isNotDefined(input)) {
+      self(input); // @tsassert: never
+    } else {
+      self(input); // @tsassert: string | boolean | null
+    }
+
+    expect(isNotDefined(input)).toBe(false);
   });
 });
