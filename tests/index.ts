@@ -11,6 +11,8 @@ import {
   isDefined,
   isNull,
   isNotNull,
+  isNullish,
+  isNotNullish,
 } from '../src';
 
 const self = <T>(input: T): T => input;
@@ -540,5 +542,93 @@ describe('isNotNull', () => {
     }
 
     expect(isNotNull(input)).toBe(true);
+  });
+});
+
+describe('isNullish', () => {
+  it('should return true when input is null or undefined', () => {
+    const input = null as number | null | undefined;
+
+    self(input); // @tsassert: number | null | undefined
+
+    if (isNullish(input)) {
+      self(input); // @tsassert: null | undefined
+    } else {
+      self(input); // @tsassert: number
+    }
+
+    expect(isNullish(input)).toBe(true);
+  });
+
+  it('should return false when input is not null or undefined', () => {
+    const input = 0 as number | null | undefined;
+
+    self(input); // @tsassert: number | null | undefined
+
+    if (isNullish(input)) {
+      self(input); // @tsassert: null | undefined
+    } else {
+      self(input); // @tsassert: number
+    }
+
+    expect(isNullish(input)).toBe(false);
+  });
+
+  it('should narrow to type never when types do not overlap', () => {
+    const input = '' as string | number | boolean;
+
+    self(input); // @tsassert: string | number | boolean
+
+    if (isNullish(input)) {
+      self(input); // @tsassert: never
+    } else {
+      self(input); // @tsassert: string | number | boolean
+    }
+
+    expect(isNullish(input)).toBe(false);
+  });
+});
+
+describe('isNotNullish', () => {
+  it('should return true when input is not null or undefined', () => {
+    const input = 0 as number | null | undefined;
+
+    self(input); // @tsassert: number | null | undefined
+
+    if (isNotNullish(input)) {
+      self(input); // @tsassert: number
+    } else {
+      self(input); // @tsassert: null | undefined
+    }
+
+    expect(isNotNullish(input)).toBe(true);
+  });
+
+  it('should return false when input is null or undefined', () => {
+    const input = null as number | null | undefined;
+
+    self(input); // @tsassert: number | null | undefined
+
+    if (isNotNullish(input)) {
+      self(input); // @tsassert: number
+    } else {
+      self(input); // @tsassert: null | undefined
+    }
+
+    expect(isNotNullish(input)).toBe(false);
+  });
+
+  it('should narrow to type never when types do not overlap', () => {
+    const input = '' as string | number | boolean;
+
+    self(input); // @tsassert: string | number | boolean
+
+    if (isNotNullish(input)) {
+      self(input); // @tsassert: string | number | boolean
+    } else {
+      self(input); // @tsassert: never
+    }
+
+    expect(isNotNullish(input)).toBe(true);
   });
 });
