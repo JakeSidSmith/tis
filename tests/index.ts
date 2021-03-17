@@ -1,4 +1,4 @@
-import { isNumber, isNotNumber } from '../src';
+import { isNumber, isNotNumber, isString, isNotString } from '../src';
 
 const self = <T>(input: T): T => input;
 
@@ -87,5 +87,93 @@ describe('isNotNumber', () => {
     }
 
     expect(isNotNumber(input)).toBe(true);
+  });
+});
+
+describe('isString', () => {
+  it('should return true when input is a string', () => {
+    const input = '' as string | null | undefined;
+
+    self(input); // @tsassert: string | null | undefined
+
+    if (isString(input)) {
+      self(input); // @tsassert: string
+    } else {
+      self(input); // @tsassert: null | undefined
+    }
+
+    expect(isString(input)).toBe(true);
+  });
+
+  it('should return false when input is not a string', () => {
+    const input = null as string | null | undefined;
+
+    self(input); // @tsassert: string | null | undefined
+
+    if (isString(input)) {
+      self(input); // @tsassert: string
+    } else {
+      self(input); // @tsassert: null | undefined
+    }
+
+    expect(isString(input)).toBe(false);
+  });
+
+  it('should narrow to type never when types do not overlap', () => {
+    const input = 0 as number | null | undefined;
+
+    self(input); // @tsassert: number | null | undefined
+
+    if (isString(input)) {
+      self(input); // @tsassert: never
+    } else {
+      self(input); // @tsassert: number | null | undefined
+    }
+
+    expect(isString(input)).toBe(false);
+  });
+});
+
+describe('isNotString', () => {
+  it('should return true when input is not a string', () => {
+    const input = null as string | null | undefined;
+
+    self(input); // @tsassert: string | null | undefined
+
+    if (isNotString(input)) {
+      self(input); // @tsassert: null | undefined
+    } else {
+      self(input); // @tsassert: string
+    }
+
+    expect(isNotString(input)).toBe(true);
+  });
+
+  it('should return false when input is a string', () => {
+    const input = '' as string | null | undefined;
+
+    self(input); // @tsassert: string | null | undefined
+
+    if (isNotString(input)) {
+      self(input); // @tsassert: null | undefined
+    } else {
+      self(input); // @tsassert: string
+    }
+
+    expect(isNotString(input)).toBe(false);
+  });
+
+  it('should narrow to type never when types do not overlap', () => {
+    const input = 0 as number | null | undefined;
+
+    self(input); // @tsassert: number | null | undefined
+
+    if (isNotString(input)) {
+      self(input); // @tsassert: number | null | undefined
+    } else {
+      self(input); // @tsassert: never
+    }
+
+    expect(isNotString(input)).toBe(true);
   });
 });
