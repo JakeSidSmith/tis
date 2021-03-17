@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noUncheckedIndexedAccess": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": false,
+    "target": "ES5",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "jsx": "react"
+  },
+  "include": ["src", "tests"]
+}
