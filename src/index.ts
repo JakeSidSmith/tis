@@ -80,11 +80,11 @@ export const isNotNullish = <T>(
  * Returns true when the input is an array
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const isArray = <T>(input: T): input is Extract<T, any[]> =>
+export const isArray = <T>(input: T): input is Extract<T, readonly any[]> =>
   Array.isArray(input);
 /**
  * Returns true when the input is not an array
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const isNotArray = <T>(input: T): input is Exclude<T, any[]> =>
+export const isNotArray = <T>(input: T): input is Exclude<T, readonly any[]> =>
   !isArray(input);

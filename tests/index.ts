@@ -13,6 +13,8 @@ import {
   isNotNull,
   isNullish,
   isNotNullish,
+  isArray,
+  isNotArray,
 } from '../src';
 
 const self = <T>(input: T): T => input;
@@ -630,5 +632,93 @@ describe('isNotNullish', () => {
     }
 
     expect(isNotNullish(input)).toBe(true);
+  });
+});
+
+describe('isArray', () => {
+  it('should return true when input is an array', () => {
+    const input = [] as string[] | readonly number[] | null | undefined;
+
+    self(input); // @tsassert: string[] | readonly number[] | null | undefined
+
+    if (isArray(input)) {
+      self(input); // @tsassert: string[] | readonly number[]
+    } else {
+      self(input); // @tsassert: null | undefined
+    }
+
+    expect(isArray(input)).toBe(true);
+  });
+
+  it('should return false when input is not an array', () => {
+    const input = null as string[] | readonly number[] | null | undefined;
+
+    self(input); // @tsassert: string[] | readonly number[] | null | undefined
+
+    if (isArray(input)) {
+      self(input); // @tsassert: string[] | readonly number[]
+    } else {
+      self(input); // @tsassert: null | undefined
+    }
+
+    expect(isArray(input)).toBe(false);
+  });
+
+  it('should narrow to type never when types do not overlap', () => {
+    const input = '' as string | null | undefined;
+
+    self(input); // @tsassert: string | null | undefined
+
+    if (isArray(input)) {
+      self(input); // @tsassert: never
+    } else {
+      self(input); // @tsassert: string | null | undefined
+    }
+
+    expect(isArray(input)).toBe(false);
+  });
+});
+
+describe('isNotArray', () => {
+  it('should return true when input is not an array', () => {
+    const input = null as string[] | readonly number[] | null | undefined;
+
+    self(input); // @tsassert: string[] | readonly number[] | null | undefined
+
+    if (isNotArray(input)) {
+      self(input); // @tsassert: null | undefined
+    } else {
+      self(input); // @tsassert: string[] | readonly number[]
+    }
+
+    expect(isNotArray(input)).toBe(true);
+  });
+
+  it('should return false when input is an array', () => {
+    const input = [] as string[] | readonly number[] | null | undefined;
+
+    self(input); // @tsassert: string[] | readonly number[] | null | undefined
+
+    if (isNotArray(input)) {
+      self(input); // @tsassert: null | undefined
+    } else {
+      self(input); // @tsassert: string[] | readonly number[]
+    }
+
+    expect(isNotArray(input)).toBe(false);
+  });
+
+  it('should narrow to type never when types do not overlap', () => {
+    const input = '' as string | null | undefined;
+
+    self(input); // @tsassert: string | null | undefined
+
+    if (isNotArray(input)) {
+      self(input); // @tsassert: string | null | undefined
+    } else {
+      self(input); // @tsassert: never
+    }
+
+    expect(isNotArray(input)).toBe(true);
   });
 });
