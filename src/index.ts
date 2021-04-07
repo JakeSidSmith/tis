@@ -46,3 +46,10 @@ export const isNullish = <T>(input: T): input is Extract<T, undefined | null> =>
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const isArray = <T>(input: T): input is Extract<T, readonly any[]> =>
   Array.isArray(input);
+
+/**
+ * Returns true when the input is an object (includes arrays, excludes null)
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const isObject = <T>(input: T): input is Extract<T, Record<any, any>> =>
+  !!input && typeof input === 'object';

@@ -7,6 +7,7 @@ import {
   isNull,
   isNullish,
   isArray,
+  isObject,
 } from '../src';
 
 const self = <T>(input: T): T => input;
@@ -374,5 +375,63 @@ describe('isArray', () => {
     }
 
     expect(isArray(input)).toBe(false);
+  });
+});
+
+describe('isObject', () => {
+  it('should return true when input is an object (includes arrays, excludes null)', () => {
+    const input = {} as
+      | string[]
+      | readonly number[]
+      | Record<string, string>
+      | Record<number, string>
+      | Record<symbol, string>
+      | null
+      | undefined;
+
+    self(input); // @tsassert: string[] | readonly number[] | Record<string, string> | Record<number, string> | Record<symbol, string> | null | undefined
+
+    if (isObject(input)) {
+      self(input); // @tsassert: string[] | readonly number[] | Record<string, string> | Record<number, string> | Record<symbol, string>
+    } else {
+      self(input); // @tsassert: null | undefined
+    }
+
+    expect(isObject(input)).toBe(true);
+  });
+
+  it('should return false when input is not an object', () => {
+    const input = null as
+      | string[]
+      | readonly number[]
+      | Record<string, string>
+      | Record<number, string>
+      | Record<symbol, string>
+      | null
+      | undefined;
+
+    self(input); // @tsassert: string[] | readonly number[] | Record<string, string> | Record<number, string> | Record<symbol, string> | null | undefined
+
+    if (isObject(input)) {
+      self(input); // @tsassert: string[] | readonly number[] | Record<string, string> | Record<number, string> | Record<symbol, string>
+    } else {
+      self(input); // @tsassert: null | undefined
+    }
+
+    expect(isObject(input)).toBe(false);
+  });
+
+  it('should narrow to type never when types do not overlap', () => {
+    const input = '' as string | null | undefined;
+
+    self(input); // @tsassert: string | null | undefined
+
+    if (isObject(input)) {
+      self(input); // @tsassert: never
+    } else {
+      self(input); // @tsassert: string | null | undefined
+    }
+
+    expect(isObject(input)).toBe(false);
   });
 });
