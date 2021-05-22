@@ -445,14 +445,15 @@ describe('isCallable', () => {
   it('should return true when input is a function', () => {
     const input = (() => null) as
       | TestClass
+      | typeof TestClass
       | (new () => TestClass)
       | (() => null)
       | null;
 
-    self(input); // @tsassert: TestClass | (new () => TestClass) | (() => null) | null
+    self(input); // @tsassert: TestClass | typeof TestClass | (new () => TestClass) | (() => null) | null
 
     if (isCallable(input)) {
-      self(input); // @tsassert: (new () => TestClass) | (() => null)
+      self(input); // @tsassert: typeof TestClass | (new () => TestClass) | (() => null)
     } else {
       self(input); // @tsassert: TestClass | null
     }
@@ -463,14 +464,15 @@ describe('isCallable', () => {
   it('should return true when input is a class constructor', () => {
     const input = TestClass as
       | TestClass
+      | typeof TestClass
       | (new () => TestClass)
       | (() => null)
       | null;
 
-    self(input); // @tsassert: TestClass | (new () => TestClass) | (() => null) | null
+    self(input); // @tsassert: TestClass | typeof TestClass | (new () => TestClass) | (() => null) | null
 
     if (isCallable(input)) {
-      self(input); // @tsassert: (new () => TestClass) | (() => null)
+      self(input); // @tsassert: typeof TestClass | (new () => TestClass) | (() => null)
     } else {
       self(input); // @tsassert: TestClass | null
     }
@@ -481,14 +483,15 @@ describe('isCallable', () => {
   it('should return false when input is not a function or class constructor', () => {
     const input = new TestClass() as
       | TestClass
+      | typeof TestClass
       | (new () => TestClass)
       | (() => null)
       | null;
 
-    self(input); // @tsassert: TestClass | (new () => TestClass) | (() => null) | null
+    self(input); // @tsassert: TestClass | typeof TestClass | (new () => TestClass) | (() => null) | null
 
     if (isCallable(input)) {
-      self(input); // @tsassert: (new () => TestClass) | (() => null)
+      self(input); // @tsassert: typeof TestClass | (new () => TestClass) | (() => null)
     } else {
       self(input); // @tsassert: TestClass | null
     }
