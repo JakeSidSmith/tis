@@ -8,7 +8,7 @@ import {
   isNullish,
   isArray,
   isObject,
-  isCallable,
+  isFunction,
 } from '../src';
 
 const self = <T>(input: T): T => input;
@@ -441,7 +441,7 @@ describe('isObject', () => {
   });
 });
 
-describe('isCallable', () => {
+describe('isFunction', () => {
   it('should return true when input is a function', () => {
     const input = (() => null) as
       | TestClass
@@ -452,13 +452,13 @@ describe('isCallable', () => {
 
     self(input); // @tsassert: TestClass | typeof TestClass | (new () => TestClass) | (() => null) | null
 
-    if (isCallable(input)) {
+    if (isFunction(input)) {
       self(input); // @tsassert: typeof TestClass | (new () => TestClass) | (() => null)
     } else {
       self(input); // @tsassert: TestClass | null
     }
 
-    expect(isCallable(input)).toBe(true);
+    expect(isFunction(input)).toBe(true);
   });
 
   it('should return true when input is a class constructor', () => {
@@ -471,13 +471,13 @@ describe('isCallable', () => {
 
     self(input); // @tsassert: TestClass | typeof TestClass | (new () => TestClass) | (() => null) | null
 
-    if (isCallable(input)) {
+    if (isFunction(input)) {
       self(input); // @tsassert: typeof TestClass | (new () => TestClass) | (() => null)
     } else {
       self(input); // @tsassert: TestClass | null
     }
 
-    expect(isCallable(input)).toBe(true);
+    expect(isFunction(input)).toBe(true);
   });
 
   it('should return false when input is not a function or class constructor', () => {
@@ -490,13 +490,13 @@ describe('isCallable', () => {
 
     self(input); // @tsassert: TestClass | typeof TestClass | (new () => TestClass) | (() => null) | null
 
-    if (isCallable(input)) {
+    if (isFunction(input)) {
       self(input); // @tsassert: typeof TestClass | (new () => TestClass) | (() => null)
     } else {
       self(input); // @tsassert: TestClass | null
     }
 
-    expect(isCallable(input)).toBe(false);
+    expect(isFunction(input)).toBe(false);
   });
 
   it('should narrow to type never when types do not overlap', () => {

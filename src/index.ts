@@ -57,7 +57,7 @@ export const isObject = <T>(input: T): input is Extract<T, Record<any, any>> =>
 /**
  * Returns true when the input is a function or class constructor
  */
-export const isCallable = <T>(
+export const isFunction = <T>(
   input: T
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): input is Extract<T, ((...args: any) => any) | (new (...args: any) => any)> =>
