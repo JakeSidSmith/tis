@@ -12,6 +12,8 @@ import {
 
 const self = <T>(input: T): T => input;
 
+class TestClass {}
+
 describe('isNumber', () => {
   it('should return true when input is a number', () => {
     const input = 0 as number | null | undefined;
@@ -386,13 +388,14 @@ describe('isObject', () => {
       | Record<string, string>
       | Record<number, string>
       | Record<symbol, string>
+      | TestClass
       | null
       | undefined;
 
-    self(input); // @tsassert: string[] | readonly number[] | Record<string, string> | Record<number, string> | Record<symbol, string> | null | undefined
+    self(input); // @tsassert: string[] | readonly number[] | Record<string, string> | Record<number, string> | Record<symbol, string> | TestClass | null | undefined
 
     if (isObject(input)) {
-      self(input); // @tsassert: string[] | readonly number[] | Record<string, string> | Record<number, string> | Record<symbol, string>
+      self(input); // @tsassert: string[] | readonly number[] | Record<string, string> | Record<number, string> | Record<symbol, string> | TestClass
     } else {
       self(input); // @tsassert: null | undefined
     }
@@ -407,13 +410,14 @@ describe('isObject', () => {
       | Record<string, string>
       | Record<number, string>
       | Record<symbol, string>
+      | TestClass
       | null
       | undefined;
 
-    self(input); // @tsassert: string[] | readonly number[] | Record<string, string> | Record<number, string> | Record<symbol, string> | null | undefined
+    self(input); // @tsassert: string[] | readonly number[] | Record<string, string> | Record<number, string> | Record<symbol, string> | TestClass | null | undefined
 
     if (isObject(input)) {
-      self(input); // @tsassert: string[] | readonly number[] | Record<string, string> | Record<number, string> | Record<symbol, string>
+      self(input); // @tsassert: string[] | readonly number[] | Record<string, string> | Record<number, string> | Record<symbol, string> | TestClass
     } else {
       self(input); // @tsassert: null | undefined
     }
