@@ -8,6 +8,7 @@ import {
   isNullish,
   isArray,
   isObject,
+  isCallable,
 } from '../src';
 
 const self = <T>(input: T): T => input;
@@ -437,5 +438,75 @@ describe('isObject', () => {
     }
 
     expect(isObject(input)).toBe(false);
+  });
+});
+
+describe('isCallable', () => {
+  it('should return true when input is a function', () => {
+    const input = (() => null) as
+      | TestClass
+      | (new () => TestClass)
+      | (() => null)
+      | null;
+
+    self(input); // @tsassert: TestClass | (new () => TestClass) | (() => null) | null
+
+    if (isCallable(input)) {
+      self(input); // @tsassert: (new () => TestClass) | (() => null)
+    } else {
+      self(input); // @tsassert: TestClass | null
+    }
+
+    expect(isCallable(input)).toBe(true);
+  });
+
+  it('should return true when input is a class constructor', () => {
+    const input = TestClass as
+      | TestClass
+      | (new () => TestClass)
+      | (() => null)
+      | null;
+
+    self(input); // @tsassert: TestClass | (new () => TestClass) | (() => null) | null
+
+    if (isCallable(input)) {
+      self(input); // @tsassert: (new () => TestClass) | (() => null)
+    } else {
+      self(input); // @tsassert: TestClass | null
+    }
+
+    expect(isCallable(input)).toBe(true);
+  });
+
+  it('should return false when input is not a function or class constructor', () => {
+    const input = new TestClass() as
+      | TestClass
+      | (new () => TestClass)
+      | (() => null)
+      | null;
+
+    self(input); // @tsassert: TestClass | (new () => TestClass) | (() => null) | null
+
+    if (isCallable(input)) {
+      self(input); // @tsassert: (new () => TestClass) | (() => null)
+    } else {
+      self(input); // @tsassert: TestClass | null
+    }
+
+    expect(isCallable(input)).toBe(false);
+  });
+
+  it('should narrow to type never when types do not overlap', () => {
+    const input = '' as string | null | undefined;
+
+    self(input); // @tsassert: string | null | undefined
+
+    if (isNumber(input)) {
+      self(input); // @tsassert: never
+    } else {
+      self(input); // @tsassert: string | null | undefined
+    }
+
+    expect(isNumber(input)).toBe(false);
   });
 });

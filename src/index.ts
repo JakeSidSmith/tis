@@ -53,3 +53,12 @@ export const isArray = <T>(input: T): input is Extract<T, readonly any[]> =>
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const isObject = <T>(input: T): input is Extract<T, Record<any, any>> =>
   !!input && typeof input === 'object';
+
+/**
+ * Returns true when the input is a function or class constructor
+ */
+export const isCallable = <T>(
+  input: T
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+): input is Extract<T, ((...args: any) => any) | (new (...args: any) => any)> =>
+  typeof input === 'function';
